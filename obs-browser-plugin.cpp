@@ -129,6 +129,9 @@ static void browser_source_get_defaults(obs_data_t *settings)
 	obs_data_set_default_bool(settings, "restart_when_active", false);
 	obs_data_set_default_string(settings, "css", default_css);
 	obs_data_set_default_bool(settings, "reroute_audio", false);
+
+	obs_data_set_default_string(settings, "javascript", "");
+	obs_data_set_default_bool(settings, "javascript_active", false);
 }
 
 static bool is_local_file_modified(obs_properties_t *props, obs_property_t *,
@@ -204,6 +207,17 @@ static obs_properties_t *browser_source_get_properties(void *data)
 				obs_module_text("ShutdownSourceNotVisible"));
 	obs_properties_add_bool(props, "restart_when_active",
 				obs_module_text("RefreshBrowserActive"));
+
+	obs_property_t *j = obs_properties_add_text(
+		props, "javascript", obs_module_text("JavaScript"),
+		OBS_TEXT_MULTILINE);
+	obs_property_text_set_monospace(j, true);
+
+	prop = obs_properties_add_bool(props, "javascript_active",
+				       obs_module_text("JavaScriptActive"));
+
+	obs_property_set_long_description(
+		j, obs_module_text("JavaScript.ToolTip"));
 
 	obs_properties_add_button(
 		props, "refreshnocache", obs_module_text("RefreshNoCache"),
