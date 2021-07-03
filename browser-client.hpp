@@ -178,5 +178,9 @@ public:
 			       CefRefPtr<CefFrame> frame,
 			       int httpStatusCode) override;
 
+	virtual void OnLoadStart(CefRefPtr<CefBrowser> browser,
+				 CefRefPtr<CefFrame> frame,
+				 TransitionType transition_type) override;
+
 	IMPLEMENT_REFCOUNTING(BrowserClient);
 };

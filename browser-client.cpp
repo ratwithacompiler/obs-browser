@@ -503,6 +503,27 @@ void BrowserClient::OnAudioStreamStopped(CefRefPtr<CefBrowser> browser, int id)
 }
 #endif
 
+void BrowserClient::OnLoadStart(CefRefPtr<CefBrowser>,
+                                CefRefPtr<CefFrame> frame,
+                                TransitionType transition_type)
+{
+        blog(LOG_INFO, "OnLoadStart: %d", frame->IsMain());
+        if (!bs) {
+                return;
+        }
+	
+        if (frame->IsMain()) {
+                if (bs->javascript_active) {
+                        blog(LOG_INFO, "OnLoadStart: injecting");
+                        std::string javascript;
+                        javascript = bs->javascript;
+                        if (!bs->javascript.empty())
+                                frame->ExecuteJavaScript(javascript,
+                                                         frame->GetURL(), 0);
+                }
+        }
+}
+
 void BrowserClient::OnLoadEnd(CefRefPtr<CefBrowser>, CefRefPtr<CefFrame> frame,
 			      int)
 {
